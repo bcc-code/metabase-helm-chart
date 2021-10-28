@@ -37,7 +37,7 @@ database:
   # Database type (h2 / mysql / postgres), default: h2
   type: h2
   ## Specify file to store H2 database.  You will also have to back this with a volume (cf. extraVolume and extraVolumeMounts)!
-  # file:
+  file: "/db-data/db.h2"
   # encryptionKey: << YOUR ENCRYPTION KEY >>
   ## Only need when you use mysql / postgres
   # host:
@@ -90,12 +90,17 @@ extraInitContainers: []
 #        curl -Lso /plugins/athena.metabase-driver.jar \
 #                  https://github.com/dacort/metabase-athena-driver/releases/download/v1.1.0/athena.metabase-driver.jar
 
-extraVolumeMounts: []
+extraVolumeMounts:
+  - name: "data"
+    mountPath: "/db-data"
+    readOnly: false
 #  - name: plugins
 #    mountPath: /plugins
 #    readOnly: false
 
-extraVolumes: []
+extraVolumes:
+  - name: "data"
+    emptyDir: {}
 #  - name: plugins
 #    emptyDir: {}
 
@@ -108,6 +113,10 @@ readinessProbe:
   initialDelaySeconds: 30
   timeoutSeconds: 3
   periodSeconds: 5
+
+iap:
+  enabled: true
+  secret: "iap-secret"
 
 service:
   name: metabase
@@ -126,7 +135,7 @@ ingress:
   # className: ...
   # Used to create Ingress record (should used with service.type: ClusterIP).
   hosts:
-    - "*"
+    # - "*"
     # - metabase.domain.com
   # The ingress path. Useful to host metabase on a subpath, such as `/metabase`.
   path: /
@@ -139,7 +148,7 @@ ingress:
     {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  tls:
+    #tls:
     # Secrets must be manually created in the namespace.
     # - secretName: metabase-tls
     #   hosts:

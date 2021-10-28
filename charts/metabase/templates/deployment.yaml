@@ -40,6 +40,8 @@ spec:
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+          - name: MB_DB_AUTOMIGRATE
+            value: {{ .Values.db.autoMigrate | quote }}
           - name: MB_JETTY_HOST
             value: {{ .Values.listen.host | quote }}
           - name: MB_JETTY_PORT
