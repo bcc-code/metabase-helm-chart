@@ -100,7 +100,8 @@ extraVolumeMounts:
 
 extraVolumes:
   - name: "data"
-    emptyDir: {}
+    persistentVolumeClaim:
+      claimName: metabase-data
 #  - name: plugins
 #    emptyDir: {}
 
