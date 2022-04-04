@@ -4,6 +4,7 @@ metadata:
   name: "iap-config"
   namespace: {{ .Release.Namespace }}
 spec:
+  timeoutSec: {{ .Values.iap.timeout }}
   iap:
     enabled: {{ .Values.iap.enabled }}
     oauthclientCredentials:

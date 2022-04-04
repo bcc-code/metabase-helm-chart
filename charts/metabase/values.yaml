@@ -118,6 +118,7 @@ readinessProbe:
 iap:
   enabled: true
   secret: "iap-secret"
+  timeout: 600
 
 service:
   name: metabase
